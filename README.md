@@ -18,13 +18,13 @@ is the underlying neuronal firing rate in Hertz, $dt$ is the chosen bin size in 
 
 Let $\mathbf{x_j} = [x_{1,j}, x_{2,j}, \cdots, x_{K,j}]^\top$ and $\mathbf{z_{j,l}} = [z_{1,j,l}, z_{2,j,l}, \cdots, z_{K,j,l}]^\top$ represent the concatanated time domain latent variables. We then assume that they are distributed as Gaussian Processes via a log-link function:
 
-$\log \mathbf{z_{j,l}} \sim \mathcal{N}\left(\mathbf{0}, \mathbf{N}\right), N_{k,m} = \rho_N \exp{\left(- \frac{1}{2} \left|{\frac{t_k-t_m}{ \ell_N }}\right|^q\right)} $
-
-and
-
 $\log \mathbf{x_j}  \sim \mathcal{N}\left(\mathbf{0}, \mathbf{S}^{\sf (j)}\right) , S^{\sf (j)}_{k,m} = \rho^{(j)}_S \exp{\left(- \frac{1}{2} \left|{\frac{t_k-t_m}{ \ell^{(j)}_S }}\right|^2\right)}$
 
-where $\theta = [ \rho_N, \ell_N, q, \rho^{(j)}_S, \ell^{(j)}_S, j = 1, \cdots, J ]$ are hyper-parameters.
+where the signal covariance $\mathbf{S}^{\sf (j)}$ is modelled by the standard RBF kernel and
+
+$\log \mathbf{z_{j,l}} \sim \mathcal{N}\left(\mathbf{0}, \mathbf{N}\right), N_{k,m} = \rho_N \exp{\left(- \frac{1}{2} \left|{\frac{t_k-t_m}{ \ell_N }}\right|^q\right)} $
+
+where the noise covariance $\mathbf{N}$ is modelled by the Exponentiated Power Law kernel. Note that under this generative model, $\theta = [ \rho_N, \ell_N, q, \rho^{(j)}_S, \ell^{(j)}_S, j = 1, \cdots, J ]$ are all hyper-parameters to be inferred.
 
 ## Variational Inference
 
