@@ -14,7 +14,7 @@ where
 
 $\lambda_{k,j,l} = \exp\left(x_{k,j} + z_{k,j,l}\right)$
 
-is the underlying neuronal firing rate in Hertz, $dt$ is the chosen bin size in seconds, $z_{k,jl}$ is the noise component that models trial-to-trial variablity, and $x_{k,j}$ represents the shared signal component across all trials of the $j^{th}$ stimulus presentation. 
+is the underlying neuronal firing rate in Hertz, $dt$ is the chosen bin size in seconds, $z_{k,j,l}$ is the noise component that models trial-to-trial variablity, and $x_{k,j}$ represents the stimulus-locked signal component that is shared among all trials of the $j^{th}$ stimulus presentation. 
 
 Let $\mathbf{x_j} = [x_{1,j}, x_{2,j}, \cdots, x_{K,j}]^\top$ and $\mathbf{z_{j,l}} = [z_{1,j,l}, z_{2,j,l}, \cdots, z_{K,j,l}]^\top$ represent the concatanated time domain latent variables. We then assume that they are distributed as Gaussian Processes via a log-link function:
 
@@ -22,7 +22,7 @@ $\log \mathbf{z_{j,l}} \sim \mathcal{N}\left(\mathbf{0}, \mathbf{N}\right), {N}_
 
 and
 
-$\log \mathbf{x_j}  \sim \mathcal{N}\left(\mathbf{0}, \mathbf{S}^{\sf (j)}\right) , {S}^{\sf (j)}_{k,m} = \rho^{(j)}_{S} \exp{\left(- \frac{1}{2} \left|{\frac{t_k-t_m}{ \ell^{(j)}_{S} }}\right|^2\right)}$
+$\log \mathbf{x_j}  \sim \mathcal{N}\left(\mathbf{0}, \mathbf{S}^{\sf (j)}\right) , S^{\sf (j)}_{k,m} = \rho^{(j)}_S \exp{\left(- \frac{1}{2} \left|{\frac{t_k-t_m}{ \ell^{(j)}_S }}\right|^2\right)}$
 
 where $\theta = [ \rho_N, \ell_N, q, \rho^{(j)}_{S}, \ell^{(j)}_{S}, j = 1, \cdots, J ]$ are hyper-parameters.
 
