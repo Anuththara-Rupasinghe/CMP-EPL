@@ -8,7 +8,7 @@ We assume the following forward model:
 
 The spike counts at the $k^{th}$ time frame and $l^{th}$ trial of the $j^{th}$ stimulus follows an inhomogeneous Poisson process:
 
-$y_{k,j,l} \sim \operatorname{Poisson}\left( \lambda_{k,j,l} dt \right)$
+$y_{k,j,l} \sim \text{Poisson}\left( \lambda_{k,j,l} dt \right)$
 
 where 
 
