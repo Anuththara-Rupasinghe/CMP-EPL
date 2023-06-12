@@ -1,6 +1,6 @@
 %% setpaths
 
-% Add necessary paths for Signal and Noise GP Parameter estimation
+% Add necessary paths for continously partitioning neuronal variability
 
 addpath datapreprocessing
 addpath kernelfuns
