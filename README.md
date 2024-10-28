@@ -1,6 +1,6 @@
-# Continuously Partitioning Neuronal Variability
+# Continuous Partitioning of Neuronal Variability
 
-This repository contains the codes for inferring the signal and noise latent Gaussian processes underlying multi-stimuli multi-trial spiking observations, using the CMP-EPL (Continuously-partitioned Modulated Poisson - Exponentiated Power Law) model and inference method
+This repository contains the codes for the continuous modulated Poisson (CMP) modeling framework, which partitions neuronal spiking variability over continuous time, by describing a neuron's firing rate as the product of a time-varying stimulus drive and a continuous-time stochastic gain process.
 
 ## Forward Model
 
@@ -12,23 +12,23 @@ $y_{k,j,l} \sim \text{Poisson}\left( \lambda_{k,j,l} dt \right)$
 
 where 
 
-$\lambda_{k,j,l} = \exp\left(x_{k,j} + z_{k,j,l}\right)$
+$\lambda_{k,j,l} = \exp\left(x_{k,j} + g_{k,j,l}\right)$
 
-is the underlying neuronal firing rate in Hertz, $dt$ is the chosen bin size in seconds, $z_{k,j,l}$ is the noise component that models trial-to-trial variability, and $x_{k,j}$ represents the stimulus-locked signal component that is shared among all trials of the $j^{th}$ stimulus presentation. 
+is the underlying neuronal firing rate in Hertz, $dt$ is the chosen bin size in seconds, $g_{k,j,l}$ is the stochastic gain process that models trial-to-trial variability, and $x_{k,j}$ represents the time-varying stimulus drive that is shared among all trials of the $j^{th}$ stimulus presentation. 
 
-Let $\mathbf{x_j} = [x_{1,j}, x_{2,j}, \cdots, x_{K,j}]^\top$ and $\mathbf{z_{j,l}} = [z_{1,j,l}, z_{2,j,l}, \cdots, z_{K,j,l}]^\top$ represent the concatanated time domain latent variables. We then assume that they are distributed as Gaussian Processes via a log-link function:
+Let $\mathbf{x_j} = [x_{1,j}, x_{2,j}, \cdots, x_{K,j}]^\top$ and $\mathbf{g_{j,l}} = [g_{1,j,l}, g_{2,j,l}, \cdots, g_{K,j,l}]^\top$ represent the concatenated time domain latent variables. We then assume that they are distributed as Gaussian Processes via a log-link function:
 
 $\log \mathbf{x_j}  \sim \mathcal{N}\left(\mathbf{0}, \mathbf{S}^{\sf (j)}\right) , S^{\sf (j)}_{k,m} = \rho^{(j)}_S \exp{\left(- \frac{1}{2} \left|{\frac{t_k-t_m}{ \ell^{(j)}_S }}\right|^2\right)}$
 
-where the signal covariance $\mathbf{S}^{\sf (j)}$ is modeled by the standard RBF kernel and
+where the stimulus drive covariance $\mathbf{S}^{\sf (j)}$ is modeled by the standard RBF kernel and
 
-$\log \mathbf{z_{j,l}} \sim \mathcal{N}\left(\mathbf{0}, \mathbf{N}\right), N_{k,m} = \rho_N \exp{\left(- \frac{1}{2} \left|{\frac{t_k-t_m}{ \ell_N }}\right|^q\right)} $
+$\log \mathbf{z_{j,l}} \sim \mathcal{N}\left(\mathbf{0}, \mathbf{G}\right), G_{k,m} = \rho_G \exp{\left(- \frac{1}{2} \left|{\frac{t_k-t_m}{ \ell_G }}\right|^q\right)} $
 
-where the noise covariance $\mathbf{N}$ is modeled by the Exponentiated Power Law kernel and is assumed to be shared across all stimulus conditions. Note that under this generative model, $\theta = [ \rho_N, \ell_N, q, \rho^{(j)}_S, \ell^{(j)}_S, j = 1, \cdots, J ]$ are all hyper-parameters to be inferred.
+where the noise covariance $\mathbf{G}$ is modeled by the Exponentiated Power Law kernel and is assumed to be shared across all stimulus conditions. Note that under this generative model, $\theta = [ \rho_G, \ell_G, q, \rho^{(j)}_S, \ell^{(j)}_S, j = 1, \cdots, J ]$ are all hyper-parameters to be inferred.
 
 ## Variational Inference
 
-We introduce an efficient variational inference scheme to infer both the hyper-parameters $\theta$, and the latent variables $\mathbf{x_j}$ and $\mathbf{z_{j,l}}$. Further, we reduce the computational complexity of the algorithm by inferring the latent Signal components in Fourier Domain (we formulate a circulant variant of the covariance matrix $\mathbf{S}^{\sf (j)}$ which diagonalizes in the Fourier Domain). Next, we derive the mean and variance of spike counts based on the analytical formulations of our model and compare them with the corresponding empirical statistics of spike count observations. Finally, we compare the performance of our model with several other variants, including a baseline Poisson model without any noise component, and a variant of the proposed CMP model with the noise covariance also set to be the RBF kernel (i.e., fixing $q = 2$), and two variants of the modulated Poisson model introduces in [Goris et al., 2014].   
+We introduce an efficient variational inference scheme to infer both the hyper-parameters $\theta$, and the latent variables $\mathbf{x_j}$ and $\mathbf{g_{j,l}}$. Further, we reduce the computational complexity of the algorithm by inferring the latent stimulus driven components in Fourier Domain (we formulate a circulant variant of the covariance matrix $\mathbf{S}^{\sf (j)}$ which diagonalizes in the Fourier Domain). Next, we derive the mean and variance of spike counts based on the analytical formulations of our model and compare them with the corresponding empirical statistics of spike count observations. Finally, we compare the performance of our model with several other variants, including a baseline Poisson model, and a variant of the proposed CMP model with the gain covariance also set to be the RBF kernel (i.e., fixing $q = 2$), and two variants of the modulated Poisson model introduces in [Goris et al., 2014].   
 
 ## Preliminary requirements for running the code
 
